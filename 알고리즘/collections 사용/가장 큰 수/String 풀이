@@ -1,0 +1,30 @@
+import java.util.*;
+
+class Solution {
+    public String solution(int[] numbers) {
+        int nlen = numbers.length;
+        List<String> nums = new LinkedList<>();
+        
+        for(int i = 0; i < nlen; i++){
+            nums.add(Integer.toString(numbers[i]));
+        }
+        
+        Collections.sort(nums, new Comparator<String>() {
+            @Override
+            public int compare(String a, String b) {
+                return Integer.parseInt(b + a) - Integer.parseInt(a + b);
+            }    
+        });
+        
+        if(nums.get(0).equals("0")){
+            return "0";
+        }
+        
+        StringBuilder answer = new StringBuilder();
+        for(String n : nums) {
+            answer.append(n);
+        }
+        
+        return answer.toString();
+    }
+}
