@@ -2,6 +2,8 @@ package hellojpa;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 public class JpaMain {
 
     public static void main(String[] args) {
@@ -23,9 +25,15 @@ public class JpaMain {
             member.setTeam(team);
             em.persist(member);
 
-            Member findMember = em.find(Member.class, member.getId());
+            em.flush(); // 영속성 컨텍스트에 있는 거 디비 반영
+            em.clear(); // 영속성 컨텍스트 비우기
 
-            Team findTeam = findMember.getTeam();
+            Member findMember = em.find(Member.class, member.getId());
+            List<Member> members = findMember.getTeam().getMembers();
+
+            for(Member n : members) {
+                System.out.println("m = " + member.getUsername());
+            }
 
             tx.commit();
         } catch (Exception e) {
