@@ -22,8 +22,9 @@ public class JpaMain {
 
             Member member = new Member();
             member.setUsername("member1");
-            member.setTeam(team);
             em.persist(member);
+
+            team.addMember(member);
 
             em.flush(); // 영속성 컨텍스트에 있는 거 디비 반영
             em.clear(); // 영속성 컨텍스트 비우기
