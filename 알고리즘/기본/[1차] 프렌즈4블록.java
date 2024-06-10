@@ -41,7 +41,6 @@ class Solution {
             }
             
             removeSquare(m, n, changeMap);
-            System.out.println(answer);
         }
     }
     
