@@ -15,26 +15,20 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 저장
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
 
-            Member member = new Member();
-            member.setUsername("member1");
-            em.persist(member);
+            Movie movie = new Movie();
+            movie.setDirector("aaaa");
+            movie.setActor("bbbb");
+            movie.setName("ㅂㅏ람과함께슝");
+            movie.setPrice(10000);
 
-            team.addMember(member);
+            em.persist(movie);
 
-            em.flush(); // 영속성 컨텍스트에 있는 거 디비 반영
-            em.clear(); // 영속성 컨텍스트 비우기
+            em.flush();
+            em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers();
-
-            for(Member n : members) {
-                System.out.println("m = " + member.getUsername());
-            }
+            Item item = em.find(Item.class, movie.getId());
+            System.out.println("findMovie = " + item);
 
             tx.commit();
         } catch (Exception e) {
