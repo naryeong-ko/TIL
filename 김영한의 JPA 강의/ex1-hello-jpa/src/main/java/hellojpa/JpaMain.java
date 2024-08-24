@@ -17,7 +17,16 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Address address = new Address("city", "street", "10000");
 
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(address);
+            em.persist(member);
+
+            // 객체의 공유 참조를 피하기 위해 setter를 private으로 설정하거나 없애서 불변 객체로 만들었기 때문에 새로운 객체를 만들어서 값 수정
+            Address newAddress = new Address("NewCity", address.getStreet(), address.getZipcode());
+            member.setHomeAddress(newAddress);
 
             tx.commit();
         } catch (Exception e) {
