@@ -22,6 +22,8 @@ public class JpaMain {
             Member member = new Member();
             member.setUsername("member");
             member.setAge(10);
+            member.setType(MemberType.ADMIN);
+
             member.setTeam(team);
 
             em.persist(member);
@@ -29,40 +31,25 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            /*
-            내부 조인(inner는 생략 가능)
-            String query = "select m from Member m inner join m.team t";
-            List<Member> result = em.createQuery(query, Member.class)
+            /* ENUM 타입은 패키지명을 포함해야 한다
+            String query = "select m.username, 'HELLO', true from Member m " +
+                    "where m.type = jpql.MemberType.ADMIN";
+            List<Object[]> result = em.createQuery(query)
                     .getResultList();
             */
 
-            /*
-            외부 조인(outer는 생략 가능)
-            String query = "select m from Member m left outer join m.team t";
-            List<Member> result = em.createQuery(query, Member.class)
+            // 패키지명이 길면 파라미터 바인딩을 하는 방법도 있다.
+            String query = "select m.username, 'HELLO', true from Member m " +
+                    "where m.type = :userType";
+            List<Object[]> result = em.createQuery(query)
+                    .setParameter("userType", MemberType.ADMIN)
                     .getResultList();
-             */
 
-            /*
-            세타 조인
-            String query = "select m from Member m, Team t where m.username = t.name";
-            List<Member> result = em.createQuery(query, Member.class)
-                    .getResultList();
-            */
-
-            /*
-            조인 대상 필터링
-            String query = "select m from Member m left join m.team t on t.name = 'teamA'";
-            List<Member> result = em.createQuery(query, Member.class)
-                    .getResultList();
-             */
-
-            /*
-            연관관계 없는 엔티티 외부 조인
-            String query = "select m from Member m left join Team t on m.username = t.name";
-            List<Member> result = em.createQuery(query, Member.class)
-                    .getResultList();
-             */
+            for(Object[] objects : result) {
+                System.out.println("objects = " + objects[0]);
+                System.out.println("objects = " + objects[1]);
+                System.out.println("objects = " + objects[2]);
+            }
 
             tx.commit();
         } catch (Exception e) {
